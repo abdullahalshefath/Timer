@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Left Today</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(0,0,0,0.15);
+    width:90%;
+    max-width:600px;
+}
+
+h1{
+    margin-bottom:20px;
+    color:#333;
+}
+
+.current-time{
+    font-size:2rem;
+    font-weight:bold;
+    color:#0077ff;
+    margin-bottom:20px;
+}
+
+.countdown{
+    font-size:3rem;
+    font-weight:bold;
+    color:#ff4d4d;
+}
+
+.text{
+    margin-top:15px;
+    font-size:1.1rem;
+    color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Time Left Until Tomorrow</h1>
+
+    <div class="current-time" id="currentTime">
+        Loading...
+    </div>
+
+    <div class="countdown" id="countdown">
+        00:00:00
+    </div>
+
+    <div class="text">
+        Remaining time in today
+        <footer>©Abdullah Al Shifat</footer>
+    </div>
+</div>
+
+<script>
+function updateClock() {
+
+    // Bangladesh Time
+    const now = new Date();
+
+    const bdTime = new Date(
+        now.toLocaleString("en-US", {
+            timeZone: "Asia/Dhaka"
+        })
+    );
+
+    // Current Time (12-hour format)
+    const currentTime = bdTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    });
+
+    document.getElementById("currentTime").innerHTML =
+        "Current Time: " + currentTime;
+
+    // Tomorrow midnight
+    const tomorrow = new Date(bdTime);
+    tomorrow.setHours(24, 0, 0, 0);
+
+    const diff = tomorrow - bdTime;
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor(
+        (diff % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor(
+        (diff % (1000 * 60)) / 1000
+    );
+
+    document.getElementById("countdown").innerHTML =
+        String(hours).padStart(2,"0") + ":" +
+        String(minutes).padStart(2,"0") + ":" +
+        String(seconds).padStart(2,"0");
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
